@@ -3,14 +3,15 @@
 import {
   ArrowDownToLine,
   ArrowUpRight,
-  AudioLines,
   Check,
   ChevronDown,
   CirclePlus,
   ImagePlus,
   LoaderCircle,
+  Gauge,
   MoreHorizontal,
   Pencil,
+  Plane,
   Search,
   SlidersHorizontal,
   Trash2,
@@ -158,7 +159,7 @@ export default function Home() {
         body: JSON.stringify({ ...form, photoUrl }),
       });
       const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "No se pudo guardar el instrumento.");
+      if (!response.ok) throw new Error(data.error || "No se pudo guardar el equipo.");
 
       setDialogOpen(false);
       setPhotoFile(null);
@@ -186,9 +187,9 @@ export default function Home() {
   return (
     <main className="app-shell">
       <aside className="sidebar">
-        <a className="brand" href="#inicio" aria-label="Arco, inicio">
-          <span className="brand-mark"><AudioLines size={21} strokeWidth={2.2} /></span>
-          <span>arco<span className="brand-period">.</span></span>
+        <a className="brand" href="#inicio" aria-label="Chiarappa Aviónica, inicio">
+          <span className="brand-mark"><Plane size={19} strokeWidth={2.2} /></span>
+          <span>Chiarappa<span className="brand-period">.</span></span>
         </a>
         <div className="sidebar-label">ESPACIO DE TRABAJO</div>
         <a className="nav-link active" href="#inventario"><span className="nav-glyph">▦</span> Inventario</a>
@@ -208,27 +209,27 @@ export default function Home() {
         <div className="page-content" id="inventario">
           <div className="heading-row">
             <div>
-              <div className="eyebrow"><span className="eyebrow-dot" /> CONTROL DE ACTIVOS</div>
-              <h1>Inventario</h1>
-              <p className="intro">Todos tus instrumentos, organizados en un solo lugar.</p>
+              <div className="eyebrow"><span className="eyebrow-dot" /> CONTROL DE AVIÓNICA</div>
+              <h1>Inventario de aviónica</h1>
+              <p className="intro">Instrumentos y equipos aeronáuticos, identificados y bajo control.</p>
             </div>
             <button className="primary-button" type="button" onClick={openNew}>
-              <CirclePlus size={17} strokeWidth={2.1} /> Añadir instrumento
+              <CirclePlus size={17} strokeWidth={2.1} /> Añadir equipo
             </button>
           </div>
 
           <div className="stats-row">
-            <div className="stat-card"><div className="stat-icon"><AudioLines size={18} /></div><div><span className="stat-label">Instrumentos registrados</span><strong>{instruments.length.toString().padStart(2, "0")}</strong></div><span className="stat-note">en total</span></div>
+            <div className="stat-card"><div className="stat-icon"><Gauge size={18} /></div><div><span className="stat-label">Equipos registrados</span><strong>{instruments.length.toString().padStart(2, "0")}</strong></div><span className="stat-note">en total</span></div>
             <div className="stat-card stat-card-secondary"><div className="stat-icon stat-icon-soft"><Check size={17} /></div><div><span className="stat-label">Estado del inventario</span><strong className="status-value"><i /> Actualizado</strong></div><span className="stat-note">al momento</span></div>
           </div>
 
           <div className="inventory-heading">
-            <div><h2>Todos los instrumentos <span className="count-pill">{instruments.length}</span></h2><p>Consulta y administra los instrumentos registrados.</p></div>
+            <div><h2>Equipos registrados <span className="count-pill">{instruments.length}</span></h2><p>Consulta modelos, números de parte, series y responsables.</p></div>
             <button type="button" className="export-button" onClick={() => window.print()}><ArrowDownToLine size={16} /> Exportar <ArrowUpRight size={14} /></button>
           </div>
 
           <div className="toolbar">
-            <label className="search-box"><Search size={17} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar por nombre, serie o número de parte..." /></label>
+            <label className="search-box"><Search size={17} /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Buscar equipo, responsable, P/N o S/N..." /></label>
             <button className="filter-button" type="button" onClick={() => setQuery("")}><SlidersHorizontal size={16} /> Filtros <span>0</span></button>
             <button className="sort-button" type="button">Más recientes <ChevronDown size={15} /></button>
           </div>
@@ -239,53 +240,53 @@ export default function Home() {
             <div className="loading-state"><LoaderCircle className="spinner" size={24} /><span>Cargando inventario…</span></div>
           ) : filtered.length === 0 ? (
             <div className="empty-state">
-              <div className="empty-icon"><AudioLines size={25} /></div>
+              <div className="empty-icon"><Gauge size={25} /></div>
               <h3>{query ? "No encontramos resultados" : "Tu inventario comienza aquí"}</h3>
-              <p>{query ? "Prueba con otro nombre, número de parte o serie." : "Registra tu primer instrumento para tener todos sus datos a mano."}</p>
-              {!query && <button type="button" className="primary-button" onClick={openNew}><CirclePlus size={17} /> Añadir instrumento</button>}
+              <p>{query ? "Prueba con otro equipo, responsable, número de parte o serie." : "Registra el primer equipo de aviónica para tener su identificación y responsable a mano."}</p>
+              {!query && <button type="button" className="primary-button" onClick={openNew}><CirclePlus size={17} /> Añadir equipo</button>}
             </div>
           ) : (
             <div className="instrument-grid">
               {filtered.map((item, index) => (
                 <article className="instrument-card" key={item.id} style={{ animationDelay: `${index * 45}ms` }}>
                   <div className="instrument-photo">
-                    {item.photo_url ? <Image src={item.photo_url} alt={item.instrument_name} fill unoptimized sizes="(max-width: 480px) 100vw, (max-width: 1120px) 50vw, 33vw" /> : <div className="photo-placeholder"><AudioLines size={31} strokeWidth={1.4} /><span>Sin fotografía</span></div>}
-                    <span className="photo-chip">INSTRUMENTO</span>
+                    {item.photo_url ? <Image src={item.photo_url} alt={item.instrument_name} fill unoptimized sizes="(max-width: 480px) 100vw, (max-width: 1120px) 50vw, 33vw" /> : <div className="photo-placeholder"><Gauge size={31} strokeWidth={1.4} /><span>Sin imagen del equipo</span></div>}
+                    <span className="photo-chip">AVIÓNICA</span>
                     <div className="card-actions">
                       <button type="button" onClick={() => openEdit(item)} aria-label={`Editar ${item.instrument_name}`} title="Editar"><Pencil size={15} /></button>
                       <button type="button" onClick={() => void deleteInstrument(item)} aria-label={`Eliminar ${item.instrument_name}`} title="Eliminar"><Trash2 size={15} /></button>
                     </div>
                   </div>
                   <div className="instrument-info">
-                    <div className="card-title-row"><div><span className="owner-label">ASIGNADO A</span><h3>{item.person_name}</h3></div><span className="created-date">{dateFormatter.format(new Date(item.created_at))}</span></div>
-                    <p className="instrument-name">{item.instrument_name}</p>
-                    <div className="instrument-meta"><div><span>N.º DE PARTE</span><strong>{item.part_number}</strong></div><div className="meta-divider" /><div><span>N.º DE SERIE</span><strong>{item.serial_number}</strong></div></div>
+                    <div className="card-title-row"><div><span className="owner-label">EQUIPO / MODELO</span><h3>{item.instrument_name}</h3></div><span className="created-date">{dateFormatter.format(new Date(item.created_at))}</span></div>
+                    <p className="instrument-name">Responsable: {item.person_name}</p>
+                    <div className="instrument-meta"><div><span>N.º DE PARTE · P/N</span><strong>{item.part_number}</strong></div><div className="meta-divider" /><div><span>N.º DE SERIE · S/N</span><strong>{item.serial_number}</strong></div></div>
                   </div>
                 </article>
               ))}
             </div>
           )}
-          <footer className="page-footer"><span>ARCO INVENTARIO <i>·</i> GESTIÓN DE EQUIPOS</span><span>{filtered.length} de {instruments.length} registros <i>·</i> <button type="button" onClick={() => void loadInstruments()}>Actualizar</button></span></footer>
+          <footer className="page-footer"><span>CHIARAPPA <i>·</i> INVENTARIO DE AVIÓNICA</span><span>{filtered.length} de {instruments.length} registros <i>·</i> <button type="button" onClick={() => void loadInstruments()}>Actualizar</button></span></footer>
         </div>
       </section>
 
       {dialogOpen && (
         <div className="modal-backdrop" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget && !saving) setDialogOpen(false); }}>
           <section className="modal" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
-            <div className="modal-header"><div><span className="modal-kicker">REGISTRO DE EQUIPO</span><h2 id="dialog-title">{editing ? "Editar instrumento" : "Añadir instrumento"}</h2></div><button type="button" className="close-button" onClick={() => setDialogOpen(false)} aria-label="Cerrar"><X size={19} /></button></div>
+            <div className="modal-header"><div><span className="modal-kicker">REGISTRO DE AVIÓNICA</span><h2 id="dialog-title">{editing ? "Editar equipo" : "Añadir equipo"}</h2></div><button type="button" className="close-button" onClick={() => setDialogOpen(false)} aria-label="Cerrar"><X size={19} /></button></div>
             <form onSubmit={handleSubmit}>
               <div className="form-grid">
-                <label className="form-field span-two"><span>Nombre de la persona <b>*</b></span><input required maxLength={160} value={form.personName} onChange={(event) => setForm({ ...form, personName: event.target.value })} placeholder="Ej. María González" /></label>
-                <label className="form-field span-two"><span>Nombre del instrumento <b>*</b></span><input required maxLength={160} value={form.instrumentName} onChange={(event) => setForm({ ...form, instrumentName: event.target.value })} placeholder="Ej. Piano de cola Yamaha" /></label>
-                <label className="form-field"><span>Número de parte <b>*</b></span><input required maxLength={100} value={form.partNumber} onChange={(event) => setForm({ ...form, partNumber: event.target.value })} placeholder="Ej. CFX-001" /></label>
-                <label className="form-field"><span>Número de serie <b>*</b></span><input required maxLength={100} value={form.serialNumber} onChange={(event) => setForm({ ...form, serialNumber: event.target.value })} placeholder="Ej. 7B04321" /></label>
-                <div className="form-field span-two"><span>Fotografía {!editing && <b>*</b>}</span><label className={`photo-upload ${preview ? "has-photo" : ""}`}>
-                  {preview ? <><Image src={preview} alt="Vista previa del instrumento" fill unoptimized sizes="480px" /><span className="replace-photo"><ImagePlus size={15} /> Cambiar fotografía</span></> : <><span className="upload-icon"><ImagePlus size={19} /></span><strong>Selecciona una fotografía</strong><small>JPG, PNG o WEBP · Máximo 4 MB</small></>}
-                  <input type="file" accept="image/jpeg,image/png,image/webp" required={!editing && !preview} onChange={handlePhotoChange} />
+                <label className="form-field span-two"><span>Responsable / técnico <b>*</b></span><input required maxLength={160} value={form.personName} onChange={(event) => setForm({ ...form, personName: event.target.value })} placeholder="Ej. María González" /></label>
+                <label className="form-field span-two"><span>Equipo / modelo <b>*</b></span><input required maxLength={160} value={form.instrumentName} onChange={(event) => setForm({ ...form, instrumentName: event.target.value })} placeholder="Ej. Garmin GNS 430W · GPS/NAV/COMM" /></label>
+                <label className="form-field"><span>N.º de parte (P/N) <b>*</b></span><input required maxLength={100} value={form.partNumber} onChange={(event) => setForm({ ...form, partNumber: event.target.value })} placeholder="Ej. 011-01060-00" /></label>
+                <label className="form-field"><span>N.º de serie (S/N) <b>*</b></span><input required maxLength={100} value={form.serialNumber} onChange={(event) => setForm({ ...form, serialNumber: event.target.value })} placeholder="Ej. 3A1234567" /></label>
+                <div className="form-field span-two"><span>Foto del equipo <small>(opcional)</small></span><label className={`photo-upload ${preview ? "has-photo" : ""}`}>
+                  {preview ? <><Image src={preview} alt="Vista previa del equipo de aviónica" fill unoptimized sizes="480px" /><span className="replace-photo"><ImagePlus size={15} /> Cambiar imagen</span></> : <><span className="upload-icon"><ImagePlus size={19} /></span><strong>Selecciona una imagen del equipo</strong><small>Opcional · JPG, PNG o WEBP · Máximo 4 MB</small></>}
+                  <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handlePhotoChange} />
                 </label></div>
               </div>
               {formError && <div className="form-error" role="alert">{formError}</div>}
-              <div className="modal-footer"><span><b>*</b> Campos obligatorios</span><div><button type="button" className="cancel-button" onClick={() => setDialogOpen(false)} disabled={saving}>Cancelar</button><button type="submit" className="primary-button" disabled={saving}>{saving ? <><LoaderCircle size={16} className="spinner" /> Guardando…</> : <><Check size={16} /> {editing ? "Guardar cambios" : "Guardar instrumento"}</>}</button></div></div>
+              <div className="modal-footer"><span><b>*</b> Campos obligatorios</span><div><button type="button" className="cancel-button" onClick={() => setDialogOpen(false)} disabled={saving}>Cancelar</button><button type="submit" className="primary-button" disabled={saving}>{saving ? <><LoaderCircle size={16} className="spinner" /> Guardando…</> : <><Check size={16} /> {editing ? "Guardar cambios" : "Guardar equipo"}</>}</button></div></div>
             </form>
           </section>
         </div>

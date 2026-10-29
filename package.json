@@ -1,0 +1,11 @@
+{
+  "name": "chiarappa-instruments-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "cd instruments-data-app && npm run dev",
+    "build": "cd instruments-data-app && npm run build",
+    "lint": "cd instruments-data-app && npm run lint",
+    "start": "cd instruments-data-app && npm run start"
+  }
+}

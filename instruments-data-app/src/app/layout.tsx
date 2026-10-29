@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Arco · Inventario de instrumentos",
-  description: "Inventario de instrumentos y equipos de Chiarappa Instruments.",
+  title: "Chiarappa · Inventario de aviónica",
+  description: "Control de instrumentos y equipos de aviónica de Chiarappa Instruments.",
 };
 
 export default function RootLayout({

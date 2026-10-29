@@ -20,6 +20,11 @@
 # production
 /build
 
+# datos e imágenes del modo local
+/data/instruments.json
+/data/instruments.json.tmp
+/public/uploads/
+
 # misc
 .DS_Store
 *.pem

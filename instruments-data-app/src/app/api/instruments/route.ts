@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { ensureInstrumentsTable, getSql } from "@/lib/db";
+import { createLocalInstrument, listLocalInstruments } from "@/lib/local-store";
 
 export const runtime = "nodejs";
 
@@ -19,6 +20,10 @@ function errorResponse(error: unknown) {
 
 export async function GET() {
   try {
+    if (process.env.NODE_ENV !== "production" && !process.env.POSTGRES_URL && !process.env.DATABASE_URL) {
+      return NextResponse.json(await listLocalInstruments());
+    }
+
     await ensureInstrumentsTable();
     const sql = getSql();
     const instruments = await sql`
@@ -53,6 +58,17 @@ export async function POST(request: Request) {
         { error: "Uno o más campos exceden la longitud permitida." },
         { status: 400 },
       );
+    }
+
+    if (process.env.NODE_ENV !== "production" && !process.env.POSTGRES_URL && !process.env.DATABASE_URL) {
+      const instrument = await createLocalInstrument({
+        person_name: personName,
+        instrument_name: instrumentName,
+        part_number: partNumber,
+        serial_number: serialNumber,
+        photo_url: photoUrl || null,
+      });
+      return NextResponse.json(instrument, { status: 201 });
     }
 
     await ensureInstrumentsTable();
